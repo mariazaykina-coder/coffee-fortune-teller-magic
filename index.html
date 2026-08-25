@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☕ Гадание на кофейной гуще 🔮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2B48C 50%, #8B4513 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+        }
+
+        .subtitle {
+            color: #D2691E;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .coffee-cup {
+            font-size: 120px;
+            margin: 20px 0;
+            animation: rotate 3s infinite linear;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .button {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+            margin: 15px 0;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.5);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .fortune-box {
+            background: linear-gradient(135deg, #FFF8DC, #FFE4B5);
+            border: 3px dashed #8B4513;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            min-height: 100px;
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .fortune-box.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fortune-text {
+            color: #8B4513;
+            font-size: 1.3em;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .emoji-rain {
+            font-size: 30px;
+            margin: 10px 0;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #696969, #A9A9A9);
+            font-size: 14px;
+            padding: 10px 25px;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #606060, #999999);
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #8B4513;
+            font-size: 0.9em;
+        }
+
+        .instruction {
+            color: #D2691E;
+            font-size: 1.1em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ ГАДАНИЕ НА КОФЕЙНОЙ ГУЩЕ 🔮</h1>
+        <p class="subtitle">Древнее искусство предсказания твоей судьбы!</p>
+        
+        <div class="coffee-cup" id="coffeeCup">☕</div>
+        
+        <div class="instruction">
+            <p>💭 Подумай о своем вопросе и нажми кнопку ниже</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Древние силы кофейной гущи откроют тебе истину!</p>
+        </div>
+
+        <button class="button" onclick="getFortune()">🎲 УЗНАТЬ СУДЬБУ 🎲</button>
+
+        <div class="fortune-box" id="fortuneBox">
+            <div class="emoji-rain" id="emojiRain"></div>
+            <div class="fortune-text" id="fortuneText"></div>
+            <div class="emoji-rain" id="emojiRain2"></div>
+            <button class="button reset-btn" onclick="resetFortune()">↻ Еще раз!</button>
+        </div>
+
+        <footer>
+            <p>✨ Результаты гарантированно точны на 100% (может быть) ✨</p>
+        </footer>
+    </div>
+
+    <script>
+        const fortunes = [
+            "🍀 Тебя ждет встреча с интересным человеком... или это просто кот? 🐱",
+            "🌟 Скоро тебя ждет большое изменение! Может быть, новая прическа? 💇",
+            "💰 Деньги придут неожиданно! Проверь карманы старых штанов! 👖",
+            "❤️ Любовь витает в воздухе... или это просто запах кофе? ☕",
+            "🚀 Ты достигнешь больших высот! Начни с лифта! 🛗",
+            "🎭 Тебя ждет время перемен и веселья! Купи билет в кино! 🎬",
+            "🧘 Ищи спокойствие внутри себя... или просто поспи побольше! 😴",
+            "🏆 Ты - чемпион! Даже если ты сейчас это отрицаешь! 💪",
+            "🌙 Под луной тебя ждет магия... или просто хорошая прогулка! 🌃",
+            "🎨 Твоя судьба - это ты сам! Рисуй ее, как хочешь! 🖌️",
+            "🍕 Вскоре ты получишь то, что жаждешь... пиццу? Или это просто совпадение? 🍕",
+            "⚡ Удача улыбнется тебе! Особенно когда ты не смотришь! 😉",
+            "🦄 Волшебство реально! И оно следующий понедельник! 📅",
+            "🌈 После дождя всегда светит солнце... или облака? 🌥️",
+            "🎪 Жизнь - это карнавал! Танцуй, как никто не смотрит! 🎉",
+            "🔥 Огонь внутри тебя горит! Может, пора выпить воды? 💧",
+            "🌺 Красота и гармония находятся близко! Смотри под диван! 🛋️",
+            "🎯 Ты попадешь в цель! Даже если мишень очень маленькая! 🎯",
+            "🌊 Волны судьбы несут тебя... прямо к холодильнику! 🧊",
+            "🎼 Музыка жизни играет для тебя! Послушай внимательнее! 🎵"
+        ];
+
+        function getFortune() {
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            const fortune = fortunes[randomIndex];
+            
+            const fortuneBox = document.getElementById('fortuneBox');
+            const fortuneText = document.getElementById('fortuneText');
+            const coffeeCup = document.getElementById('coffeeCup');
+            
+            // Анимация переворачивания чашки
+            coffeeCup.style.animation = 'none';
+            setTimeout(() => {
+                coffeeCup.style.animation = 'rotate 1s ease-in-out';
+            }, 10);
+            
+            fortuneText.textContent = fortune;
+            fortuneBox.classList.add('show');
+            
+            // Добавляем визуальные эффекты
+            addConfetti();
+        }
+
+        function resetFortune() {
+            document.getElementById('fortuneBox').classList.remove('show');
+            document.getElementById('coffeeCup').style.animation = 'rotate 3s infinite linear';
+        }
+
+        function addConfetti() {
+            const emojis = ['☕', '🔮', '✨', '🌟', '💫', '🎉', '🎊', '🍀', '💰'];
+            const emojiRain = document.getElementById('emojiRain');
+            const emojiRain2 = document.getElementById('emojiRain2');
+            
+            emojiRain.textContent = emojis.map(() => emojis[Math.floor(Math.random() * emojis.length)]).join(' ');
+            emojiRain2.textContent = emojis.map(() => emojis[Math.floor(Math.random() * emojis.length)]).join(' ');
+        }
+    </script>
+</body>
+</html>
